@@ -8,4 +8,7 @@ $ cd cgo-opticut
 $ python -m venv --upgrade-deps venv
 $ source ./venv/bin/activate
 $ pip install -r requirements.txt
+$ python webui.py
 ```
+
+Open http://localhost:7860 in your browser.
