@@ -5,11 +5,11 @@ from skimage import color
 from scipy.sparse import csr_matrix
 from scipy.sparse.linalg import spsolve
 
-def process_image(img_rgb_pil, img_edit_pil):
+def process_image(img_rgb_pil: Image.Image, img_edit_pil: Image.Image):
   img_rgb = np.array(img_rgb_pil.convert("RGB")) / 255.0
   img_gray = np.array(img_rgb_pil.convert("L")) / 255.0
   img_edit = np.array(img_edit_pil.convert("L")) / 255.0
-  img_hint = np.full( img_edit.shape, 0.5)
+  img_hint = np.full(img_edit.shape, 0.5)
   #idx = (np.abs((img_gray-img_edit).sum(2)) > 1e-4)
   idx = (np.abs(img_gray - img_edit) > 1e-4)
   img_hint[idx] = img_edit[idx]
