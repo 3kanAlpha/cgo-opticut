@@ -1,5 +1,5 @@
 import gradio as gr
-from opt_solver import process_image
+from opt_solver_cielab import process_image
 
 iface = gr.Interface(
     fn=process_image,
@@ -17,4 +17,4 @@ iface = gr.Interface(
     submit_btn="Run"
 )
 
-iface.launch()
+iface.launch(inbrowser=True)
