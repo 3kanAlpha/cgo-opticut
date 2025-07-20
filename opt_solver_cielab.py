@@ -5,7 +5,7 @@ from scipy.sparse import csr_matrix
 from scipy.sparse.linalg import spsolve
 
 def process_image(img_rgb_pil: Image.Image, img_edit_pil: Image.Image):
-  return process_image_lab(img_rgb_pil, img_edit_pil)
+    return process_image_lab(img_rgb_pil, img_edit_pil)
 
 def process_image_lab(img_rgb_pil: Image.Image, img_edit_pil: Image.Image, sigma: float = 10.0):
     """
@@ -91,10 +91,11 @@ def process_image_lab(img_rgb_pil: Image.Image, img_edit_pil: Image.Image, sigma
     
     # 結果をクリッピングして正規化
     alpha = np.clip(alpha, 0, 1)
+    alpha_binary = (alpha > 0.3).astype(np.uint8)
 
     # 最終的な前景画像を作成
     img_rgb_uint8 = (img_rgb * 255).astype(np.uint8)
-    alpha_channel = (alpha * 255).astype(np.uint8)
+    alpha_channel = (alpha_binary * 255).astype(np.uint8)
     rgba_image = np.dstack((img_rgb_uint8, alpha_channel))
     
     foreground_image_pil = Image.fromarray(rgba_image, mode='RGBA')
