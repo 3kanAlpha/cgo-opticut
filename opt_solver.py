@@ -88,13 +88,19 @@ def process_image(img_rgb_pil: Image.Image, img_edit_pil: Image.Image):
   # 2値マスクに変換（しきい値処理）
   mask_binary = (m > 0.3).astype(np.uint8)
 
-  # 分離された前景画像
-  # RGB画像とマスクの要素ごとの積を計算するために、マスクを3チャンネルに拡張
-  foreground_image = img_rgb * mask_binary[:, :, np.newaxis]
+  # 元のRGB画像をuint8に変換
+  img_rgb_uint8 = (img_rgb * 255).astype(np.uint8)
+
+  # アルファチャンネルを作成 (マスクが0の部分が透明(0)、1の部分が不透明(255))
+  alpha_channel = (mask_binary * 255).astype(np.uint8)
+
+  # RGBとアルファチャンネルを結合してRGBA画像を作成
+  rgba_image = np.dstack((img_rgb_uint8, alpha_channel))
 
   # 結果を PIL Image に変換して返す
   mask_binary_pil = Image.fromarray((mask_binary * 255).astype(np.uint8), mode='L')
-  foreground_image_pil = Image.fromarray((foreground_image * 255).astype(np.uint8))
+  # RGBAモードで前景画像を生成
+  foreground_image_pil = Image.fromarray(rgba_image, mode='RGBA')
 
   return mask_binary_pil, foreground_image_pil
 
